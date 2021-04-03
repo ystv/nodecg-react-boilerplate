@@ -9,7 +9,9 @@
     "url": ""
   },
   "scripts": {
-    "build": "NODE_ENV=production webpack"
+    "build": "NODE_ENV=production webpack",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "nodecg": {
     "compatibleRange": "^1.1.1",
@@ -36,6 +38,10 @@
     "@babel/core": "^7.13.14",
     "@babel/preset-react": "^7.13.13",
     "@babel/preset-typescript": "^7.13.0",
+    "@storybook/addon-actions": "^6.2.2",
+    "@storybook/addon-essentials": "^6.2.2",
+    "@storybook/addon-links": "^6.2.2",
+    "@storybook/react": "^6.2.2",
     "babel-loader": "^8.2.2",
     "fork-ts-checker-webpack-plugin": "^6.2.0",
     "html-webpack-harddisk-plugin": "^2.0.0",
