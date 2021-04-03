@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface NameProps {
     name: string;
 }
@@ -5,3 +7,4 @@ export interface NameProps {
 export function Name({name}: NameProps) {
     return <h1>Hello, {name}!</h1>;
 }
+

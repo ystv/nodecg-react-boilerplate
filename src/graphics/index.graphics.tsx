@@ -1,4 +1,5 @@
 import ReactDOM from "react-dom";
+import React from "react";
 import { useOnlyReplicantValue } from "common/useReplicant";
 import { Name } from "./Name";
 
