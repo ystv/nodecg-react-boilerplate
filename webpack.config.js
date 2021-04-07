@@ -1,8 +1,11 @@
 const path = require("path");
+const fs = require("fs");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const merge = require("webpack-merge").merge;
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const nodeExternals = require("webpack-node-externals");
+const webpack = require("webpack");
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -33,10 +36,23 @@ const baseConfig = {
           },
         ],
       },
+      {
+        test: /\.(woff2?|ttf|eot|svg|otf)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "fonts/",
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
+    isDevelopment && new webpack.HotModuleReplacementPlugin(),
     isDevelopment &&
       new ReactRefreshWebpackPlugin({
         overlay: {
@@ -47,62 +63,62 @@ const baseConfig = {
   ].filter(Boolean),
 };
 
-module.exports = [
-  merge(baseConfig, {
-    name: "dashboard",
+let wsPort = 8080;
+
+function makeConfig(kind, name) {
+  wsPort += 1;
+  const htmlTemplate = fs.existsSync(
+    path.join(__dirname, "src", kind, `index.${name}.html`)
+  )
+    ? path.join(__dirname, "src", kind, `index.${name}.html`)
+    : path.join(__dirname, "src", kind, `index.html`);
+  return merge(baseConfig, {
+    name: name,
     entry: [
-      require.resolve("webpack-dev-server/client") + "?http://0.0.0.0:8079",
-      "./src/dashboard/index.dashboard.tsx",
+      require.resolve("webpack-dev-server/client") +
+        `?http://0.0.0.0:${wsPort}`,
+      `./src/${kind}/index.${name}.tsx`,
     ],
     output: {
-      path: path.join(__dirname, "dashboard"),
-      filename: "dashboard.bundle.js",
-      uniqueName: "dashboard",
-      clean: true,
+      path: path.join(__dirname, kind),
+      filename: `${name}.bundle.js`,
+      uniqueName: name,
     },
     plugins: [
       new HtmlWebpackPlugin({
-        filename: path.join(__dirname, "dashboard", "index.html"),
-        template: "./src/dashboard/index.html",
+        filename: path.join(__dirname, kind, `${name}.html`),
+        template: htmlTemplate,
       }),
     ],
     devServer: {
       hot: true,
       writeToDisk: true,
       injectHot: true,
-      sockPort: 8079,
-      public: "localhost:8079",
+      sockPort: wsPort,
+      public: `localhost:${wsPort}`,
       inline: true,
-      port: 8079,
+      port: wsPort,
     },
-  }),
-  merge(baseConfig, {
-    name: "graphics",
-    entry: [
-      require.resolve("webpack-dev-server/client") + "?http://0.0.0.0:8080",
-      "./src/graphics/index.graphics.tsx",
-    ],
-    output: {
-      path: path.join(__dirname, "graphics"),
-      filename: "graphics.bundle.js",
-      uniqueName: "graphics",
-      clean: true,
-    },
-    plugins: [
-      new HtmlWebpackPlugin({
-        filename: path.join(__dirname, "graphics", "index.html"),
-        template: "./src/graphics/index.html",
-      }),
-    ],
-    devServer: {
-      hot: true,
-      writeToDisk: true,
-      injectHot: true,
-      sockPort: 8080,
-      public: "localhost:8080",
-      inline: true,
-    },
-  }),
+  });
+}
+
+const dashboards = fs
+  .readdirSync(path.join(__dirname, "src", "dashboard"))
+  .map((x) => x.match(/index\.(.+)\.tsx?$/i))
+  .filter(Boolean)
+  .map((x) => x[1])
+  .map((x) => makeConfig("dashboard", x));
+
+const graphics = fs
+  .readdirSync(path.join(__dirname, "src", "graphics"))
+  .map((x) => x.match(/index\.(.+)\.tsx?$/i))
+  .filter(Boolean)
+  .map((x) => x[1])
+  .map((x) => makeConfig("graphics", x));
+
+const config = [
+  ...dashboards,
+  ...graphics,
   {
     name: "extension",
     mode: "development",
@@ -130,3 +146,5 @@ module.exports = [
     },
   },
 ];
+
+module.exports = config;

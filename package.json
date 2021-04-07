@@ -9,7 +9,7 @@
     "url": ""
   },
   "scripts": {
-    "start": "NODE_ENV=development concurrently 'webpack serve --config-name=dashboard' 'webpack serve --config-name=graphics' 'webpack --config-name=extension --watch'",
+    "start": "NODE_ENV=development node startDevServer.js",
     "build": "NODE_ENV=production webpack",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
@@ -21,13 +21,18 @@
         "name": "sample",
         "title": "Sample",
         "width": 2,
-        "file": "index.html",
+        "file": "dashboard.html",
         "headerColor": "#525F78"
+      },
+      {
+        "name": "dash2",
+        "title": "Dash2",
+        "file": "dash2.html"
       }
     ],
     "graphics": [
       {
-        "file": "index.html",
+        "file": "graphics.html",
         "width": 1920,
         "height": 1080
       }
