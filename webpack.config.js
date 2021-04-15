@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const merge = require("webpack-merge").merge;
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
-const nodeExternals = require("webpack-node-externals");
 const webpack = require("webpack");
 
 const isDevelopment = process.env.NODE_ENV !== "production";
