@@ -12,7 +12,8 @@
     "start": "cross-env NODE_ENV=development node startDevServer.js",
     "build": "cross-env NODE_ENV=production webpack",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "schema": "json2ts -i schemas/ -o src/common/types/ && json2ts -i configschema.json -o src/common/types/config.d.ts"
   },
   "nodecg": {
     "compatibleRange": "^1.1.1",
@@ -23,11 +24,6 @@
         "width": 2,
         "file": "dashboard.html",
         "headerColor": "#525F78"
-      },
-      {
-        "name": "dash2",
-        "title": "Dash2",
-        "file": "dash2.html"
       }
     ],
     "graphics": [
@@ -54,6 +50,7 @@
     "fork-ts-checker-webpack-plugin": "^6.2.0",
     "html-webpack-harddisk-plugin": "^2.0.0",
     "html-webpack-plugin": "^5.3.1",
+    "json-schema-to-typescript": "^10.1.4",
     "react-refresh": "^0.10.0",
     "ts-loader": "^8.1.0",
     "typescript": "^4.2.3",
