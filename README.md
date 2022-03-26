@@ -22,7 +22,7 @@ Run `yarn` to install dependencies.
 
 ## Usage
 
-To start, run `yarn dev`, and run NodeCG in a separate terminal.
+To start, run `yarn start`, and run NodeCG in a separate terminal.
 
 To create additional dashboards/graphics, create files called `src/dashboard/index.{name}.tsx` or `src/graphics/index.{name}.tsx` - each one will be wrapped into a HTML page called `dashboard/{name}.html` or `graphics/{name}.html`. Then just reference it in `package.json` under `nodecg`. (If you want to customise the generated HTML, create a file called `index.{name}.html`.)
 
