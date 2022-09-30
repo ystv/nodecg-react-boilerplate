@@ -1,3 +1,4 @@
+/* eslint-disable */
 const path = require("path");
 const fs = require("fs");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -20,6 +21,19 @@ const baseConfig = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 3,
+              modules: false,
+            },
+          },
+        ],
+      },
+      {
         test: /\.[jt]sx?$/,
         exclude: /node_modules/,
         use: [
@@ -36,16 +50,8 @@ const baseConfig = {
         ],
       },
       {
-        test: /\.(woff2?|ttf|eot|svg|otf)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]",
-              outputPath: "fonts/",
-            },
-          },
-        ],
+        test: /\.(woff2?|ttf|eot|svg|otf|woff2|otf|ttf)(\?v=\d+\.\d+\.\d+)?$/,
+        type: "asset/resource",
       },
     ],
   },
