@@ -11,7 +11,22 @@ A boilerplate for NodeCG with React, TypeScript, Babel, and Webpack.
 
 ## Setting up
 
-Clone this repository into your NodeCG installation's `bundles` folder. You'll likely want to use a different name, like so:
+### GitHub Templates
+
+Click the green "Use this template" button on this repository, which will create a new repository based on this one.
+
+Clone your new repo into your NodeCG installation's `bundles` folder:
+```sh
+git clone git@github.com:<username>/my-awesome-bundle.git
+```
+
+Open `package.json` and change the `name` field to the name of your repository, otherwise NodeCG will refuse to start it.
+
+Run `yarn` to install dependencies.
+
+### Manual setup
+
+Clone this repo into your NodeCG installation's `bundles` folder. You'll likely want to use a different name, like so:
 ```sh
 git clone git@github.com:ystv/nodecg-react-boilerplate.git my-awesome-bundle
 ```
