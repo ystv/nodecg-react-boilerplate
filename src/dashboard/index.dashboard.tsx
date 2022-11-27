@@ -2,7 +2,7 @@ import ReactDOM from "react-dom";
 import { useReplicantValue } from "common/useReplicant";
 
 function Dashboard() {
-  const [name, setName] = useReplicantValue("name", undefined, {
+  const [name, setName] = useReplicantValue<string>("name", undefined, {
     defaultValue: "",
   });
   return (

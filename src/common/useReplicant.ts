@@ -31,19 +31,19 @@ export function useOnlyReplicantValue<T>(
     return () => {
       replicant.removeListener("change", listener);
     };
-  }, [replicant, name, namespace, opts]);
+  }, [replicant]);
   return val;
 }
 
 export function useReplicantValue<T>(
   name: string,
   namespace?: string
-): [T | undefined, (val: T) => any];
+): [T | undefined, (val: T | ((curr: T) => T)) => any];
 export function useReplicantValue<T>(
   name: string,
   namespace: string | undefined,
   opts: ReplicantOptions<T>
-): [T, (val: T) => any];
+): [T, (val: T | ((curr: T) => T)) => any];
 export function useReplicantValue<T>(
   name: string,
   namespace?: string,
@@ -65,10 +65,14 @@ export function useReplicantValue<T>(
     return () => {
       replicant.removeListener("change", listener);
     };
-  }, [replicant, name, namespace, opts]);
+  }, [replicant]);
   const setter = useCallback(
-    (newValue: T) => {
-      replicant.value = newValue;
+    (newValue: T | ((curr: T) => T)) => {
+      if (typeof newValue === "function") {
+        replicant.value = (newValue as (curr: T) => T)(replicant.value);
+      } else {
+        replicant.value = newValue;
+      }
     },
     [replicant]
   );
