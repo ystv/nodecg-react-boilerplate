@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { Replicant, ReplicantOptions } from "../../../../types/browser";
+import type { ReplicantOptions } from "../../../../types/browser";
 
 export function useOnlyReplicantValue<T>(
   name: string,
@@ -31,7 +31,7 @@ export function useOnlyReplicantValue<T>(
     return () => {
       replicant.removeListener("change", listener);
     };
-  }, [name, namespace, opts]);
+  }, [replicant, name, namespace, opts]);
   return val;
 }
 
@@ -65,12 +65,12 @@ export function useReplicantValue<T>(
     return () => {
       replicant.removeListener("change", listener);
     };
-  }, [name, namespace, opts]);
+  }, [replicant, name, namespace, opts]);
   const setter = useCallback(
     (newValue: T) => {
       replicant.value = newValue;
     },
-    [name, namespace, opts]
+    [replicant]
   );
   return [val, setter] as const;
 }
